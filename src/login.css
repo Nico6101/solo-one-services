@@ -1,0 +1,28 @@
+/*!
+* Blue-css v1.0.0
+* Copyright 2019 - eternity
+* Some License
+*/
+
+body, html {
+    height: 100%;
+    margin: 0%;
+}
+
+body {
+    background-image: url("./assets/images/login-page-background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+}
+
+h1{
+    color: yellow
+}
+.row .col.rs1{
+    position: ;
+}
+
+.row .col.bs1{
+    float: center
+}
