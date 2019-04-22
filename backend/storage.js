@@ -7,10 +7,13 @@ module.exports.handler = async (event, context) => {
   var reqbody = JSON.parse(event.body);
 
   console.log('request body = ', reqbody);
-
-  var tableinfo = dynamo.createUserTable();
-
-  console.log('tableinfo = ',tableinfo);
+  try {
+    var tableinfo = dynamo.createUserTable();
+    console.log('tableinfo = ',tableinfo);
+  }
+  catch (err) {
+    console.log("error occured while creating table : ",err)
+  }
 
   var userinfo = await dynamo.insertUserTable(reqbody,context);
 
