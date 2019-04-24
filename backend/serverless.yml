@@ -64,14 +64,21 @@ custom:
 #    - exclude-me-dir/**
 
 functions:
-  dynamoStorage:
-    name: dynamo-storage-api-${self:custom.stage}
-    handler: storage.handler
+  createTable:
+    name: dynamo-storage-createTable-api-${self:custom.stage}
+    handler: create_table.handler
     events:
       - http:
-          path: store
-          method: post
+          path: create/table
+          method: post  
 
+  insertTable:
+    name: dynamo-storage-insertTable-api-${self:custom.stage}
+    handler: insert_table.handler
+    events:
+      - http:
+          path: insert/table
+          method: post
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
