@@ -1,20 +1,36 @@
 var AWS = require('aws-sdk')
 
-const createUserTable = (tablename, primarykey) => {
-var dynamodb = new AWS.DynamoDB({ region: 'ap-south-1' });
-    var params = {
-        AttributeDefinitions: [
+const createUserTable = (tablename, primarykey, hashkey) => {
+    var dynamodb = new AWS.DynamoDB({ region: 'ap-south-1' });
+    var dbkeyschema = {};
+    if (hashkey !== undefined) {
+        dbkeyschema = [
             {
                 AttributeName: primarykey,
-                AttributeType: 'S'
+                KeyType: 'HASH',
+                AttributeName: hashkey,
+                KeyType: 'RANGE'
             }
-        ],
-        KeySchema: [
+        ]
+    }
+    else {
+        dbkeyschema = [
             {
                 AttributeName: primarykey,
                 KeyType: 'HASH'
             }
+        ]
+    }
+    var params = {
+        AttributeDefinitions: [
+            {
+                AttributeName: primarykey,
+                AttributeType: 'S',
+                AttributeName: hashkey,
+                AttributeType: 'S'
+            }
         ],
+        KeySchema: dbkeyschema,
         ProvisionedThroughput: {
             ReadCapacityUnits: 1,
             WriteCapacityUnits: 1
@@ -35,11 +51,11 @@ var dynamodb = new AWS.DynamoDB({ region: 'ap-south-1' });
     }).promise();
 }
 
-const insertUserTable = (profile,tablename) => {
-var dynamodb = new AWS.DynamoDB.DocumentClient({ region: 'ap-south-1' });
+const insertUserTable = (profile, tablename) => {
+    var dynamodb = new AWS.DynamoDB.DocumentClient({ region: 'ap-south-1' });
     var params = {
-        TableName : tablename,
-        Item : profile
+        TableName: tablename,
+        Item: profile
     }
 
     return dynamodb.put(params).promise();
