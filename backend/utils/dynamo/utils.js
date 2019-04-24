@@ -1,15 +1,15 @@
 var AWS = require('aws-sdk')
 
-const createUserTable = (tablename, primarykey, hashkey) => {
+const createUserTable = (tablename, hashkey, rangekey) => {
     console.log('creating table....')
     var dynamodb = new AWS.DynamoDB({ region: 'ap-south-1' });
     var dbkeyschema = {};
-    if (hashkey !== undefined) {
+    if (rangekey !== undefined) {
         dbkeyschema = [
             {
-                AttributeName: primarykey,
-                KeyType: 'HASH',
                 AttributeName: hashkey,
+                KeyType: 'HASH',
+                AttributeName: rangekey,
                 KeyType: 'RANGE'
             }
         ]
@@ -17,7 +17,7 @@ const createUserTable = (tablename, primarykey, hashkey) => {
     else {
         dbkeyschema = [
             {
-                AttributeName: primarykey,
+                AttributeName: hashkey,
                 KeyType: 'HASH'
             }
         ]
@@ -25,9 +25,9 @@ const createUserTable = (tablename, primarykey, hashkey) => {
     var params = {
         AttributeDefinitions: [
             {
-                AttributeName: primarykey,
-                AttributeType: 'S',
                 AttributeName: hashkey,
+                AttributeType: 'S',
+                AttributeName: rangekey,
                 AttributeType: 'S'
             }
         ],
