@@ -60,9 +60,21 @@ const insertUserTable = (profile, tablename) => {
         Item: profile
     }
 
-    return dynamodb.put(params).promise();
+    return dynamodb.put(params).promise().then(()=> {return true});
 }
+
+CREATE_RESPONSE = (statusCode, payload) => ({
+    statusCode,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Header' : '*'
+    },
+    body: JSON.stringify(payload),
+})
+
 module.exports = {
     createUserTable,
-    insertUserTable
+    insertUserTable,
+    CREATE_RESPONSE
 }
