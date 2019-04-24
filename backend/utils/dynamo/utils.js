@@ -1,6 +1,7 @@
 var AWS = require('aws-sdk')
 
 const createUserTable = (tablename, primarykey, hashkey) => {
+    console.log('creating table....')
     var dynamodb = new AWS.DynamoDB({ region: 'ap-south-1' });
     var dbkeyschema = {};
     if (hashkey !== undefined) {
@@ -52,6 +53,7 @@ const createUserTable = (tablename, primarykey, hashkey) => {
 }
 
 const insertUserTable = (profile, tablename) => {
+    console.log('inserting data.....')
     var dynamodb = new AWS.DynamoDB.DocumentClient({ region: 'ap-south-1' });
     var params = {
         TableName: tablename,
