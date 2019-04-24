@@ -1,17 +1,17 @@
 var AWS = require('aws-sdk')
 
-const createUserTable = () => {
+const createUserTable = (tablename, primarykey) => {
 var dynamodb = new AWS.DynamoDB({ region: 'ap-south-1' });
     var params = {
         AttributeDefinitions: [
             {
-                AttributeName: 'customer_id',
+                AttributeName: primarykey,
                 AttributeType: 'S'
             }
         ],
         KeySchema: [
             {
-                AttributeName: 'customer_id',
+                AttributeName: primarykey,
                 KeyType: 'HASH'
             }
         ],
@@ -19,7 +19,7 @@ var dynamodb = new AWS.DynamoDB({ region: 'ap-south-1' });
             ReadCapacityUnits: 1,
             WriteCapacityUnits: 1
         },
-        TableName: 'users_table',
+        TableName: tablename,
         StreamSpecification: {
             StreamEnabled: false
         }
@@ -32,13 +32,13 @@ var dynamodb = new AWS.DynamoDB({ region: 'ap-south-1' });
         }
         console.log("table created successfully with data = ", data);
         return data;
-    })
+    }).promise();
 }
 
-const insertUserTable = (profile,context) => {
+const insertUserTable = (profile,tablename) => {
 var dynamodb = new AWS.DynamoDB.DocumentClient({ region: 'ap-south-1' });
     var params = {
-        TableName : 'users_table',
+        TableName : tablename,
         Item : profile
     }
 
