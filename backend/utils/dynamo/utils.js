@@ -2,19 +2,41 @@ var AWS = require('aws-sdk')
 
 const createUserTable = (tablename, hashkey, sortkey) => {
     console.log('creating table....')
+
     var dynamodb = new AWS.DynamoDB({ region: 'ap-south-1' });
+    var dbdefinition = {};
     var dbkeyschema = {};
     if (sortkey !== undefined) {
+        console.log('sortkey is present')
+        dbdefinition = [
+            {
+                AttributeName: hashkey,
+                AttributeType: 'S'
+            },
+            {
+                AttributeName: sortkey,
+                AttributeType: 'S'
+            }
+        ]
         dbkeyschema = [
             {
                 AttributeName: hashkey,
-                KeyType: 'HASH',
+                KeyType: 'HASH'
+            },
+            {
                 AttributeName: sortkey,
                 KeyType: 'RANGE'
             }
         ]
     }
     else {
+        console.log('sortkey is not present')
+        dbdefinition = [
+            {
+                AttributeName: hashkey,
+                AttributeType: 'S'
+            }
+        ]
         dbkeyschema = [
             {
                 AttributeName: hashkey,
@@ -23,14 +45,7 @@ const createUserTable = (tablename, hashkey, sortkey) => {
         ]
     }
     var params = {
-        AttributeDefinitions: [
-            {
-                AttributeName: hashkey,
-                AttributeType: 'S',
-                AttributeName: sortkey,
-                AttributeType: 'S'
-            }
-        ],
+        AttributeDefinitions: dbdefinition,
         KeySchema: dbkeyschema,
         ProvisionedThroughput: {
             ReadCapacityUnits: 1,
@@ -41,8 +56,9 @@ const createUserTable = (tablename, hashkey, sortkey) => {
             StreamEnabled: false
         }
     };
-
-    dynamodb.createTable(params, (err, data) => {
+    console.log('params = ',params);
+    return dynamodb.createTable(params, (err, data) => {
+        console.log('creating table...')
         if (err) {
             console.log("error occured while creating table = ", err);
             return err;
