@@ -4,7 +4,8 @@
 * Some License
 */
 
-body, html {
+body,
+html {
     height: 100%;
     margin: 0%;
 }
@@ -16,13 +17,33 @@ body {
     height: 100%;
 }
 
-h1{
-    color: yellow
-}
-.row .col.rs1{
-    position: ;
+h1 {
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(0, 255, 106);
+    text-align: center
 }
 
-.row .col.bs1{
+.row .col.rs1 {
+    position: right
+}
+
+.row .col.bs1 {
     float: center
+}
+
+.fbbutton {
+    border: solid
+}
+
+.cardbody{
+    background-color: "grey";
+    block-size: "400px";
+    background-position: "center";
+    margin-left: "550px";
+    margin-right: "550px";
+    margin-top: "100px";
+    margin-bottom: "100px";
+    border: "solid"; 
+    border-width: "10px"; 
+    border-radius: "100px"
 }
